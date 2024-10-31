@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body>
+
+    <h1 class="bg-black text-white text-2xl md:text-3xl font-bold text-center py-10">Expense Tracker</h1>
+
+    <div class=" flex flex-col md:flex-row justify-center">
+
+        <!--User Inputs for Income-->
+        <div class="flex flex-col justify-center items-center p-8">
+            <div class="flex flex-col gap-3 p-6">
+                <label class="text-xl font-semibold mb-4" for="incomeType">Income</label>
+                <input id="incomeType" class="border rounded-sm text-sm text-black border-black outline-none p-1" placeholder="Type of Income" type="text">
+                <input id="incomeAmount" class="border rounded-sm text-sm border-black outline-none p-1" placeholder="Rupees" type="number">
+            </div>
+            <button id="addIncome" class="bg-green-500 text-white px-4 py-2 rounded">Add Income</button>
+        </div>
+
+        <!--User Inputs for Expense-->
+        <div class="flex flex-col justify-center items-center p-8">
+            <div class="flex flex-col gap-3 p-6">
+                <label class="text-xl font-semibold mb-4" for="expenseType">Expense</label>
+                <input id="expenseType" class="border rounded-sm text-black text-sm border-black outline-none p-1" placeholder="Type of Expense" type="text">
+                <input id="expenseAmount" class="border rounded-sm border-black text-sm outline-none p-1" placeholder="Amount in Rupees" type="number">
+            </div>
+            <button id="addExpense" class="bg-red-500 text-white px-4 py-2 rounded">Add Expense</button>
+        </div>
+    </div>
+
+    <!-- Additional Section to Display Totals -->
+    <div class="flex flex-col justify-center items-center py-6">
+        <p id="totalExpenses" class="md:font-bold">Total Expenses: ₹0</p>
+        <p id="remainingBalance" class="md:font-bold">Remaining Balance: ₹0</p>
+    </div>
+
+
+      <!--Table-->
+      <div class=" w-full flex justify-center items-center pb-10">
+        <table id="transactionTable" class="border border-black">
+            <thead>
+                <tr>
+                    <th class="border border-black w-14 p-2">S No</th>
+                    <th class="border border-black w-40 p-2">Details</th>
+                    <th class="border border-black w-24 p-2">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Variables for managing serial number, total expenses, and remaining balance
+        let serialNumber = 1; // For tracking row number
+        let totalIncome = 0;
+        let totalExpenses = 0;
+
+        // Add Income Event Listener
+        document.getElementById('addIncome').addEventListener('click', () => {
+            const incomeType = document.getElementById('incomeType').value;
+            const incomeAmount = parseFloat(document.getElementById('incomeAmount').value);
+
+            if (incomeType && incomeAmount) {
+                addRowToTable(serialNumber++, incomeType, incomeAmount, 'Income');
+                //add the incomes
+                totalIncome += incomeAmount;
+                updateRemainingBalance();
+                clearIncomeFields();
+            }
+        });
+
+        // Add Expense Event Listener
+        document.getElementById('addExpense').addEventListener('click', () => {
+            const expenseType = document.getElementById('expenseType').value;
+            const expenseAmount = parseFloat(document.getElementById('expenseAmount').value);
+
+            if (expenseType && expenseAmount) {
+                addRowToTable(serialNumber++, expenseType, expenseAmount, 'Expense');
+                totalExpenses += expenseAmount;
+                updateTotalExpenses();
+                updateRemainingBalance();
+                clearExpenseFields();
+            }
+        });
+
+        // Function to add a row to the table
+        function addRowToTable(sNo, transactionType, amount, transactionCategory) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="border border-black w-14 p-2">${sNo}</td>
+                <td class="border border-black w-40 p-2">${transactionType} (${transactionCategory})</td>
+                <td class="border border-black w-24 p-2">${amount}</td>
+            `;
+            document.getElementById('tableBody').appendChild(row);
+        }
+
+        // Function to update total expenses
+        function updateTotalExpenses() {
+            document.getElementById('totalExpenses').textContent = `Total Expenses: ₹${totalExpenses}`;
+        }
+
+        // Function to update remaining balance
+        function updateRemainingBalance() {
+            const remainingBalance = totalIncome - totalExpenses;
+            document.getElementById('remainingBalance').textContent = `Remaining Balance: ₹${remainingBalance}`;
+        }
+
+        // Function to clear income input fields
+        function clearIncomeFields() {
+            document.getElementById('incomeType').value = '';
+            document.getElementById('incomeAmount').value = '';
+        }
+
+        // Function to clear expense input fields
+        function clearExpenseFields() {
+            document.getElementById('expenseType').value = '';
+            document.getElementById('expenseAmount').value = '';
+        }
+    </script>
+</body>
+</html>
