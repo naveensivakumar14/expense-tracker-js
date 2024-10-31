@@ -1,6 +1,6 @@
 **#Expense Tracker**
 
-![Expense Tracker](./images/)
+![Expense Tracker](./images/Expense-tracer-js.jpg)
 
 A simple and intuitive Expense Tracker application that helps you keep track of your income and expenses. 
 Built using HTML, CSS (Tailwind), and JavaScript, this project dynamically displays transaction entries and calculates the remaining balance based on your inputs.
